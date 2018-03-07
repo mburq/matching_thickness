@@ -1,7 +1,7 @@
 include("run_sim.jl")
 
 function waiting_diff(λ_H, λ_E, N, M, t_1, time_function, num, T)
-    table = DataFrame(λ_H = Array{Float64}(0), λ_E = Array{Float64}(0), w_H = Array{Float64}(),
+    table = DataFrame(λ_H = Array{Float64}(0), λ_E = Array{Float64}(0), w_H = Array{Float64}(0),
                         wait = Array{Float64}(0), wait1 = Array{Float64}(0))
     for (e, λ_E) in enumerate(linspace(1/num,N,num))
         e%(num/10) == 0 && println("$e out of $num")
@@ -43,7 +43,7 @@ p_E = 0.5
 N = 3
 M = 5
 d = 0
-T = 100000
+T = 10000
 num = 50
 
 # Find waiting time for market 1 alone
@@ -62,7 +62,6 @@ writetable("csv/fig_2.1.csv", table1)
 # Case lambda_H > lambda_E
 λ_E_1 = 1
 λ_H_1 = 1.3
-T = 100000
 
 t_1 = run_sim(λ_E_1, λ_H_1, p_E, p_H, T, tr_prioH);
 
