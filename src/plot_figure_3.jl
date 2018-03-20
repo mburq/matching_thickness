@@ -16,7 +16,7 @@ p_fig3_l = plot(table31,
 draw(PDF("figs/fig_3.1.pdf", 6inch, 4.5inch), p_fig3_l)
 
 table32 = readtable("csv/fig_3.2.csv");
-table32[:line] = linspace(0,300,size(table31)[1])
+table32[:line] = linspace(0,0.8,size(table32)[1])
 p_fig3_l = plot(table32,
     layer(x=:λ_E, y=:line, Geom.line, Theme(default_color=colorant"green")),
     layer(x=:λ_H, y=:tr_prioH , Geom.line, Theme(default_color=colorant"blue")),

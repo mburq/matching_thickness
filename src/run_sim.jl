@@ -51,3 +51,37 @@ function run_sim_E(λ_E, λ_H, p_E, p_H, T, transition)
     h[:w_E] = h[:N_E]/λ_E
     return mean(h[Int(3*T/4):T, :w_E])
 end
+
+function run_multiple_sim(λ_E_range, λ_H_range, p_E_range, p_H_range, transitions_list; w_E = false)
+    df = DataFrame(λ_H = Array{Float64}(0),
+                   λ_E = Array{Float64}(0),
+                   θ = Array{Float64}(0),
+                   p_H = Array{Float64}(0),
+                   p_E = Array{Float64}(0))
+    for transition in transitions_list
+        df[Symbol(transition)] = Array{Float64}(0)
+    end
+    v = zeros(5 + length(transitions_list))
+    for λ_H in λ_H_range
+        v[1] = λ_H
+        for λ_E in λ_E_range
+            v[2] = λ_E
+            θ = λ_H/(λ_H + λ_E)
+            v[3] = θ
+            for p_H in p_H_range
+                v[4] = p_H
+                for p_E in p_E_range
+                    v[5] = p_E
+                    for (k, transition) in enumerate(transitions_list)
+                        v[5 + k] = run_sim(λ_E, λ_H, p_E, p_H, T, transition)
+                        if w_E
+                            v[5 + k] = run_sim_E(λ_E, λ_H, p_E, p_H, T, transition)
+                        end
+                    end
+                    push!(df, v)
+                end
+            end
+        end
+    end
+    return df
+end
